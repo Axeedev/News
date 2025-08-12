@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.IGNORE
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.news.domain.entity.Article
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -20,10 +19,10 @@ interface NewsDao {
 
     @Transaction
     @Delete
-    suspend fun removeSubscription(topic: String)
+    suspend fun removeSubscription(subscriptionDbModel: SubscriptionDbModel)
 
     @Query("SELECT * FROM articles WHERE topic IN (:topics) ORDER BY publishedAt DESC")
-    fun getAllArticlesByTopic(topics: List<String>): Flow<List<Article>>
+    fun getAllArticlesByTopic(topics: List<String>): Flow<List<ArticleDbModel>>
 
     @Insert(onConflict = IGNORE)
     suspend fun addArticles(articles: List<ArticleDbModel>)

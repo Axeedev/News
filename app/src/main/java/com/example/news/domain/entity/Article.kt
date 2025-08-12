@@ -7,5 +7,4 @@ data class Article(
     val source: String,
     val publishedAt: Long,
     val url: String
-
 )

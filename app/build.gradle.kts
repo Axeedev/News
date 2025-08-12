@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
     kotlin("plugin.serialization") version "2.2.0"
+    id("com.google.dagger.hilt.android")
 
 
 }
@@ -60,6 +61,9 @@ dependencies {
     ksp("androidx.room:room-compiler:2.7.2")
 
 
+
+    // define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
     //retrofit
     implementation ("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")

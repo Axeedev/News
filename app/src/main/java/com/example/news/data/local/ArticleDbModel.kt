@@ -21,7 +21,7 @@ import androidx.room.Index
 data class ArticleDbModel(
     val title: String,
     val description: String,
-    val imageUrl: String,
+    val imageUrl: String?,
     val url: String,
     val publishedAt: Long,
     val sourceName: String,

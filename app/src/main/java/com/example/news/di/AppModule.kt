@@ -4,6 +4,17 @@ import android.content.Context
 import androidx.room.Room
 import com.example.news.data.local.NewsDao
 import com.example.news.data.local.NewsDatabase
+import com.example.news.data.remote.ApiService
+import com.example.news.data.repository.NewsRepositoryImpl
+import com.example.news.domain.repository.NewsRepository
+import com.example.news.domain.usecases.AddSubscriptionUseCase
+import com.example.news.domain.usecases.CleanAllArticlesUseCase
+import com.example.news.domain.usecases.GetAllSubscriptionsUseCase
+import com.example.news.domain.usecases.GetArticlesByTopicsUseCase
+import com.example.news.domain.usecases.RemoveSubscriptionUseCase
+import com.example.news.domain.usecases.UpdateArticlesForTopicUseCase
+import com.example.news.domain.usecases.UpdateArticlesUseCase
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +31,11 @@ import javax.inject.Singleton
 @Module
 interface AppModule {
 
+
+    @Singleton
+    @Binds
+    fun bindRepository(newsRepositoryImpl: NewsRepositoryImpl): NewsRepository
+
     companion object {
 
         @Singleton
@@ -28,7 +44,6 @@ interface AppModule {
             return Json{
                 ignoreUnknownKeys = true
                 coerceInputValues = true
-
             }
         }
 
@@ -47,6 +62,11 @@ interface AppModule {
                 .addConverterFactory(converterFactory)
                 .build()
         }
+        @Singleton
+        @Provides
+        fun provideApiService(retrofit: Retrofit): ApiService{
+            return retrofit.create(ApiService::class.java)
+        }
 
         @Singleton
         @Provides
@@ -63,6 +83,42 @@ interface AppModule {
         @Provides
         fun provideDao(database: NewsDatabase): NewsDao{
             return database.newsDao()
+        }
+
+        @Singleton
+        @Provides
+        fun provideAddSubscriptionUseCase(repository: NewsRepository): AddSubscriptionUseCase{
+            return AddSubscriptionUseCase(repository)
+        }
+        @Singleton
+        @Provides
+        fun provideCleanAllArticlesUseCase(repository: NewsRepository): CleanAllArticlesUseCase{
+            return CleanAllArticlesUseCase(repository)
+        }
+        @Singleton
+        @Provides
+        fun provideGetAllSubscriptionsUseCase(repository: NewsRepository): GetAllSubscriptionsUseCase{
+            return GetAllSubscriptionsUseCase(repository)
+        }
+        @Singleton
+        @Provides
+        fun provideGetArticlesByTopicsUseCase(repository: NewsRepository): GetArticlesByTopicsUseCase{
+            return GetArticlesByTopicsUseCase(repository)
+        }
+        @Singleton
+        @Provides
+        fun provideRemoveSubscriptionUseCase(repository: NewsRepository): RemoveSubscriptionUseCase{
+            return RemoveSubscriptionUseCase(repository)
+        }
+        @Singleton
+        @Provides
+        fun provideUpdateArticlesUseCase(repository: NewsRepository): UpdateArticlesUseCase{
+            return UpdateArticlesUseCase(repository)
+        }
+        @Singleton
+        @Provides
+        fun provideUpdateArticlesForTopicUseCase(repository: NewsRepository): UpdateArticlesForTopicUseCase{
+            return UpdateArticlesForTopicUseCase(repository)
         }
 
     }
