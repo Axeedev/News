@@ -43,7 +43,6 @@ class NewsRepositoryImpl @Inject constructor(
 
     override suspend fun updateArticlesForAllTopics() {
         val subscriptions = newsDao.getAllSubscriptions().first()
-
         withContext(Dispatchers.IO){
             subscriptions.forEach {
                 launch {

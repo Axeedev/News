@@ -45,8 +45,6 @@ class SubscriptionsViewModel @Inject constructor(
         get() = _state.asStateFlow()
 
 
-
-
     init {
         observeSubscriptions()
         observeSelectedSubscriptions()
@@ -67,7 +65,9 @@ class SubscriptionsViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
     private fun observeSelectedSubscriptions(){
-        _state.map { it.selectedSubscriptions }
+        _state.map {
+            it.selectedSubscriptions
+        }
             .distinctUntilChanged()
             .flatMapLatest {
                 getArticlesByTopicsUseCase(it)
@@ -101,7 +101,11 @@ class SubscriptionsViewModel @Inject constructor(
                     updateArticlesUseCase()
                 }
             }
-            is SubscriptionsCommand.RemoveSubscription -> TODO()
+            is SubscriptionsCommand.RemoveSubscription -> {
+                viewModelScope.launch {
+                    removeSubscriptionUseCase.invoke(command.subscription)
+                }
+            }
             SubscriptionsCommand.RemoveSubscriptions -> {
                 viewModelScope.launch {
                     val toggledSubscriptions = state.value.selectedSubscriptions
