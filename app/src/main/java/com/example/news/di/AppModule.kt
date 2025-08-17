@@ -2,11 +2,15 @@ package com.example.news.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.work.WorkManager
+import androidx.work.impl.WorkManagerImpl
 import com.example.news.data.local.NewsDao
 import com.example.news.data.local.NewsDatabase
 import com.example.news.data.remote.ApiService
 import com.example.news.data.repository.NewsRepositoryImpl
+import com.example.news.data.repository.SettingsRepositoryImpl
 import com.example.news.domain.repository.NewsRepository
+import com.example.news.domain.repository.SettingsRepository
 import com.example.news.domain.usecases.AddSubscriptionUseCase
 import com.example.news.domain.usecases.CleanAllArticlesUseCase
 import com.example.news.domain.usecases.GetAllSubscriptionsUseCase
@@ -36,6 +40,9 @@ interface AppModule {
     @Binds
     fun bindRepository(newsRepositoryImpl: NewsRepositoryImpl): NewsRepository
 
+    @Singleton
+    @Binds
+    fun bindSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository
     companion object {
 
         @Singleton
@@ -45,6 +52,11 @@ interface AppModule {
                 ignoreUnknownKeys = true
                 coerceInputValues = true
             }
+        }
+        @Singleton
+        @Provides
+        fun provideWorkManager(@ApplicationContext context: Context): WorkManager{
+            return WorkManager.getInstance(context)
         }
 
         @Singleton
