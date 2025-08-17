@@ -3,7 +3,6 @@ package com.example.news.presentation.screens
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -41,7 +40,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -53,7 +51,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.example.news.domain.entity.Article
 import com.example.news.presentation.ui.theme.CustomIcons
@@ -63,7 +61,7 @@ import com.example.news.utils.DateFormatter.toDateFormat
 @Composable
 fun SubscriptionsScreen(
     modifier: Modifier = Modifier,
-    viewModel: SubscriptionsViewModel = viewModel(),
+    viewModel: SubscriptionsViewModel = hiltViewModel(),
     onNavigateToSettings: () -> Unit,
 ) {
 

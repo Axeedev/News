@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +10,13 @@ plugins {
 
 
 }
+private val keystore = rootProject.file("keystore.properties")
+private val properties = keystore.inputStream().use { fileInputStream ->
+    Properties().apply {
+        load(fileInputStream)
+    }
+}
+private val apiKey = properties.getProperty("API_KEY")
 
 android {
     namespace = "com.example.news"
@@ -19,6 +28,7 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
+        buildConfigField(type = "String", name = "API_KEY", "$apiKey")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,6 +51,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

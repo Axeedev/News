@@ -14,7 +14,9 @@ import com.example.news.data.mappers.toDbModels
 import com.example.news.data.mappers.toEntity
 import com.example.news.data.remote.ApiService
 import com.example.news.domain.entity.Article
+import com.example.news.domain.entity.Language
 import com.example.news.domain.entity.RefreshConfig
+import com.example.news.domain.entity.toQueryParam
 import com.example.news.domain.repository.NewsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -42,9 +44,10 @@ class NewsRepositoryImpl @Inject constructor(
          newsDao.insertSubscription(SubscriptionDbModel(topic))
     }
 
-    override suspend fun updateArticlesForTopic(topic: String) {
-        val articles = loadArticles(topic)
-        newsDao.addArticles(articles)
+    override suspend fun updateArticlesForTopic(topic: String, language: Language) : Boolean {
+        val articles = loadArticles(topic, language)
+        val list = newsDao.addArticles(articles)
+        return list.any { it != 1L }
     }
 
     override suspend fun removeSubscription(topic: String) {
@@ -70,21 +73,26 @@ class NewsRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateArticlesForAllTopics() {
+    override suspend fun updateArticlesForAllTopics(language: Language): List<String> {
         val subscriptions = newsDao.getAllSubscriptions().first()
+
+        val newTopics = mutableListOf<String>()
+
         withContext(Dispatchers.IO){
             subscriptions.forEach {
                 launch {
-                    updateArticlesForTopic(it.topic)
+                    val hasNew = updateArticlesForTopic(it.topic, language)
+                    if (hasNew) newTopics.add(it.topic)
                 }
             }
         }
 
+        return newTopics
 
     }
 
-    private suspend fun loadArticles(topic: String): List<ArticleDbModel>{
-        return api.getArticles(topic).toDbModels(topic)
+    private suspend fun loadArticles(topic: String, language: Language): List<ArticleDbModel>{
+        return api.getArticles(topic, language.toQueryParam()).toDbModels(topic)
     }
 
     override fun getArticlesByTopics(topics: List<String>): Flow<List<Article>> {

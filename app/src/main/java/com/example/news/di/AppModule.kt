@@ -99,8 +99,8 @@ interface AppModule {
 
         @Singleton
         @Provides
-        fun provideAddSubscriptionUseCase(repository: NewsRepository): AddSubscriptionUseCase{
-            return AddSubscriptionUseCase(repository)
+        fun provideAddSubscriptionUseCase(repository: NewsRepository, settingsRepository: SettingsRepository): AddSubscriptionUseCase{
+            return AddSubscriptionUseCase(repository,settingsRepository)
         }
         @Singleton
         @Provides
@@ -124,13 +124,13 @@ interface AppModule {
         }
         @Singleton
         @Provides
-        fun provideUpdateArticlesUseCase(repository: NewsRepository): UpdateArticlesUseCase{
-            return UpdateArticlesUseCase(repository)
+        fun provideUpdateArticlesUseCase(repository: NewsRepository, settingsRepository: SettingsRepository): UpdateArticlesUseCase{
+            return UpdateArticlesUseCase(repository, settingsRepository)
         }
         @Singleton
         @Provides
-        fun provideUpdateArticlesForTopicUseCase(repository: NewsRepository): UpdateArticlesForTopicUseCase{
-            return UpdateArticlesForTopicUseCase(repository)
+        fun provideUpdateArticlesForTopicUseCase(repository: NewsRepository, settingsRepository: SettingsRepository): UpdateArticlesForTopicUseCase{
+            return UpdateArticlesForTopicUseCase(repository, settingsRepository)
         }
 
     }

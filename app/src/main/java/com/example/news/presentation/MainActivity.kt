@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.news.domain.entity.Language
+import com.example.news.presentation.navigation.AppNavGraph
 import com.example.news.presentation.screens.SubscriptionsScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,9 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SubscriptionsScreen(
-                onNavigateToSettings = {}
-            )
+            AppNavGraph()
         }
         
     }

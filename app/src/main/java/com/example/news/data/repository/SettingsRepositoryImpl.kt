@@ -1,6 +1,7 @@
 package com.example.news.data.repository
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -51,7 +52,9 @@ class SettingsRepositoryImpl @Inject constructor(
 
     override suspend fun updateLanguage(language: Language) {
         context.dataStore.edit {
+            Log.d("SettingsRepositoryImpl", it[languageKey] ?: "empty")
             it[languageKey] = language.name
+            Log.d("SettingsRepositoryImpl", it[languageKey] ?: "empty")
         }
     }
 

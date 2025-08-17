@@ -2,6 +2,7 @@
 
 package com.example.news.presentation.screens
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.util.query
@@ -35,7 +36,6 @@ class SubscriptionsViewModel @Inject constructor(
     private val getAllSubscriptionsUseCase: GetAllSubscriptionsUseCase,
     private val getArticlesByTopicsUseCase: GetArticlesByTopicsUseCase,
     private val removeSubscriptionUseCase: RemoveSubscriptionUseCase,
-    private val updateArticlesForTopicUseCase: UpdateArticlesForTopicUseCase,
     private val updateArticlesUseCase: UpdateArticlesUseCase,
 
 ): ViewModel(){
@@ -45,9 +45,13 @@ class SubscriptionsViewModel @Inject constructor(
         get() = _state.asStateFlow()
 
 
+
     init {
+        Log.d("SubscriptionsViewModel", "0")
         observeSubscriptions()
+        Log.d("SubscriptionsViewModel", "1")
         observeSelectedSubscriptions()
+        Log.d("SubscriptionsViewModel", "2")
 
     }
 
